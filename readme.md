@@ -4,9 +4,9 @@ This is a very simple typing game based on a selection of poems from [Project Gu
 
 The project uses C# and a WinForms shell.  This project uses a common [game engine](https://github.com/speedyjeff/engine))
 
-![game play](https://github.com/speedyjeff/typeordie/blob/master/TypeOrDie/media/gameplay.png)
+![game play](https://github.com/speedyjeff/TypeOrDie/blob/master/TypeOrDie/Media/gameplay.png)
 
-![game play live](https://github.com/speedyjeff/typeordie/blob/master/TypeOrDie/media/typing.gif)
+![game play live](https://github.com/speedyjeff/TypeOrDie/blob/master/TypeOrDie/Media/typing.gif)
 
 
 ## To Sync
