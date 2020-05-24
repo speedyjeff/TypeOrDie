@@ -18,6 +18,8 @@ namespace TypeOrDie
     // http://www.gutenberg.org/files/61070/61070-0.txt
     // http://www.gutenberg.org/files/60252/60252-0.txt
 
+    // http://www.textfiles.com/
+
     class Book
     {
         public Book()

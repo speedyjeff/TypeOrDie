@@ -66,13 +66,13 @@ namespace TypeOrDie
         static Cat()
         {
             // load the images from resources
-            var images = engine.Winforms.Resources.LoadImages(System.Reflection.Assembly.GetExecutingAssembly());
-
-            // preload the image for each of the cat portions
-            foreach (var img in images)
+            foreach (var res in engine.Common.Embedded.LoadResource<byte[]>(System.Reflection.Assembly.GetExecutingAssembly()))
             {
-                img.Value.MakeTransparent(RGBA.White);
-                var imgsrc = new ImageSource(img.Key, img.Value);
+                if (res.Key.Length > 0 && res.Key[0] != '_')
+                {
+                    // adds to the ImageSource cache
+                    var imgsrc = new ImageSource(res.Key, res.Value);
+                }
             }
         }
 

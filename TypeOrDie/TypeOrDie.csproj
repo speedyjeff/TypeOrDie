@@ -49,12 +49,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Book.cs" />
-    <Compile Include="Book.Tests.cs" />
-    <Compile Include="Cat.cs" />
-    <Compile Include="Library.cs" />
-    <Compile Include="Poem.cs" />
-    <Compile Include="Stats.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="TypeOrDie.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -65,18 +64,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <None Include="Books\12242.md" />
-    <None Include="Books\16328.md" />
-    <None Include="Books\42290.md" />
-    <None Include="Books\61286.md" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -100,37 +90,13 @@
       <Project>{c031d3fa-2ec9-423a-a04d-3b176c141577}</Project>
       <Name>engine.Winforms</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TypeOrDieGame\TypeOrDieGame.csproj">
+      <Project>{ade370b5-6caf-4398-b022-128e8932f277}</Project>
+      <Name>TypeOrDieGame</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="full.ico" />
-    <Content Include="Media\Cat\angry.png" />
-    <Content Include="Media\Cat\body.png" />
-    <Content Include="Media\Cat\face-forward.png" />
-    <Content Include="Media\Cat\face-front.png" />
-    <None Include="Media\Cat\full.ico" />
-    <Content Include="Media\Cat\happy.png" />
-    <Content Include="Media\Cat\leg-1-1.png" />
-    <Content Include="Media\Cat\leg-1-2.png" />
-    <Content Include="Media\Cat\leg-1-3.png" />
-    <Content Include="Media\Cat\leg-2-1.png" />
-    <Content Include="Media\Cat\leg-2-2.png" />
-    <Content Include="Media\Cat\leg-3-1.png" />
-    <Content Include="Media\Cat\leg-3-2.png" />
-    <Content Include="Media\Cat\leg-3-3.png" />
-    <Content Include="Media\Cat\leg-4-1.png" />
-    <Content Include="Media\Cat\leg-4-2.png" />
-    <Content Include="Media\Cat\leg-4-3.png" />
-    <Content Include="Media\Cat\leg-4-4.png" />
-    <Content Include="Media\Cat\paw-prints.png" />
-    <Content Include="Media\Cat\tail-1.png" />
-    <Content Include="Media\Cat\tail-2.png" />
-    <Content Include="Media\Cat\tail-3.png" />
-    <Content Include="Media\Cat\tail-4.png" />
-    <Content Include="Media\Cat\tail-5.png" />
-    <Content Include="Media\Cat\tail-6.png" />
-    <Content Include="Media\Cat\tail-7.png" />
-    <Content Include="Media\Cat\tail-8.png" />
-    <Content Include="Media\Cat\tail-9.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

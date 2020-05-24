@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "engine.Winforms", "engine\e
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeOrDie", "TypeOrDie\TypeOrDie.csproj", "{83EE981F-4551-4466-B34A-E6B59EF1986E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeOrDieGame", "TypeOrDieGame\TypeOrDieGame.csproj", "{ADE370B5-6CAF-4398-B022-128E8932F277}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{83EE981F-4551-4466-B34A-E6B59EF1986E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{83EE981F-4551-4466-B34A-E6B59EF1986E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{83EE981F-4551-4466-B34A-E6B59EF1986E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADE370B5-6CAF-4398-B022-128E8932F277}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADE370B5-6CAF-4398-B022-128E8932F277}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADE370B5-6CAF-4398-B022-128E8932F277}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADE370B5-6CAF-4398-B022-128E8932F277}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
