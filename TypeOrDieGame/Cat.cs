@@ -63,15 +63,14 @@ namespace TypeOrDie
             Height = height;
         }
 
-        static Cat()
+        public IEnumerable<KeyValuePair<string,byte[]>> GetImagesFromResources()
         {
             // load the images from resources
             foreach (var res in engine.Common.Embedded.LoadResource<byte[]>(System.Reflection.Assembly.GetExecutingAssembly()))
             {
                 if (res.Key.Length > 0 && res.Key[0] != '_')
                 {
-                    // adds to the ImageSource cache
-                    var imgsrc = new ImageSource(res.Key, res.Value);
+                    yield return res;
                 }
             }
         }
@@ -131,7 +130,7 @@ namespace TypeOrDie
             return true;
         }
 
-        public void Draw(IImage img)
+        public void Draw(IGraphics graphics)
         {
             // nothing to draw
             if (Lengths == null || Lengths.Length == 0) return;
@@ -145,7 +144,7 @@ namespace TypeOrDie
                 while (tx < maxx)
                 {
                     // display paw-prints
-                    img.Graphics.Image(PawPrintImage.Image, tx, ty, Width, Height);
+                    graphics.Image(PawPrintImage.Image, tx, ty, Width, Height);
                     tx += Width;
                 }
             }
@@ -159,25 +158,25 @@ namespace TypeOrDie
             var index = 0;
 
             // add the body
-            img.Graphics.Image(BodyImage.Image, x, y, Width, Height);
+            graphics.Image(BodyImage.Image, x, y, Width, Height);
 
             // draw legs
             for (int i = 0; i < LegIndexes.Length; i++)
             {
                 index = LegIndexes[i].Increment();
-                img.Graphics.Image(LegImages[i][index].Image, x, y, Width, Height);
+                graphics.Image(LegImages[i][index].Image, x, y, Width, Height);
             }
 
             // draw tail
-            img.Graphics.Image(TailImages[TailIndex.Increment()].Image, x, y, Width, Height);
+            graphics.Image(TailImages[TailIndex.Increment()].Image, x, y, Width, Height);
 
             // draw face
             index = FaceIndex.Increment();
-            img.Graphics.Image(FaceImages[index].Image, x, y, Width, Height);
+            graphics.Image(FaceImages[index].Image, x, y, Width, Height);
             if (index < 7)
             {
                 // add a mood
-                img.Graphics.Image(IsAngry ? AngryImage.Image : HappyImage.Image, x, y, Width, Height);
+                graphics.Image(IsAngry ? AngryImage.Image : HappyImage.Image, x, y, Width, Height);
             }
         }
 

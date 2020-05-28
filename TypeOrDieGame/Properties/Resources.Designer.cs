@@ -283,6 +283,276 @@ namespace TypeOrDieGame.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] t_angry {
+            get {
+                object obj = ResourceManager.GetObject("t_angry", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] t_body {
+            get {
+                object obj = ResourceManager.GetObject("t_body", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] t_face_forward {
+            get {
+                object obj = ResourceManager.GetObject("t_face_forward", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] t_face_front {
+            get {
+                object obj = ResourceManager.GetObject("t_face_front", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] t_happy {
+            get {
+                object obj = ResourceManager.GetObject("t_happy", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] t_leg_1_1 {
+            get {
+                object obj = ResourceManager.GetObject("t_leg_1_1", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] t_leg_1_2 {
+            get {
+                object obj = ResourceManager.GetObject("t_leg_1_2", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] t_leg_1_3 {
+            get {
+                object obj = ResourceManager.GetObject("t_leg_1_3", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] t_leg_2_1 {
+            get {
+                object obj = ResourceManager.GetObject("t_leg_2_1", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] t_leg_2_2 {
+            get {
+                object obj = ResourceManager.GetObject("t_leg_2_2", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] t_leg_3_1 {
+            get {
+                object obj = ResourceManager.GetObject("t_leg_3_1", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] t_leg_3_2 {
+            get {
+                object obj = ResourceManager.GetObject("t_leg_3_2", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] t_leg_3_3 {
+            get {
+                object obj = ResourceManager.GetObject("t_leg_3_3", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] t_leg_4_1 {
+            get {
+                object obj = ResourceManager.GetObject("t_leg_4_1", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] t_leg_4_2 {
+            get {
+                object obj = ResourceManager.GetObject("t_leg_4_2", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] t_leg_4_3 {
+            get {
+                object obj = ResourceManager.GetObject("t_leg_4_3", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] t_leg_4_4 {
+            get {
+                object obj = ResourceManager.GetObject("t_leg_4_4", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] t_paw_prints {
+            get {
+                object obj = ResourceManager.GetObject("t_paw_prints", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] t_tail_1 {
+            get {
+                object obj = ResourceManager.GetObject("t_tail_1", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] t_tail_2 {
+            get {
+                object obj = ResourceManager.GetObject("t_tail_2", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] t_tail_3 {
+            get {
+                object obj = ResourceManager.GetObject("t_tail_3", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] t_tail_4 {
+            get {
+                object obj = ResourceManager.GetObject("t_tail_4", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] t_tail_5 {
+            get {
+                object obj = ResourceManager.GetObject("t_tail_5", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] t_tail_6 {
+            get {
+                object obj = ResourceManager.GetObject("t_tail_6", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] t_tail_7 {
+            get {
+                object obj = ResourceManager.GetObject("t_tail_7", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] t_tail_8 {
+            get {
+                object obj = ResourceManager.GetObject("t_tail_8", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] t_tail_9 {
+            get {
+                object obj = ResourceManager.GetObject("t_tail_9", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] tail_1 {
             get {
                 object obj = ResourceManager.GetObject("tail_1", resourceCulture);

@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>TypeOrDieWeb</title>
+    <base href="/" />
+    <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/app.css" rel="stylesheet" />
+</head>
+
+<body>
+    <app>Loading...</app>
+
+    <div id="blazor-error-ui">
+        An unhandled error has occurred.
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+    <script src="_framework/blazor.webassembly.js"></script>
+    <script src="_content/Blazor.Extensions.Canvas/blazor.extensions.canvas.js"></script>
+    <script>
+        function createImage(canvas, id) {
+            return new Promise(function (resolve) {
+                var img = document.createElement("img");
+                img.setAttribute('id', id);
+                canvas.appendChild(img);
+                resolve();
+            });
+        }
+
+        function updateImage(id, base64) {
+            return new Promise(function (resolve) {
+                var img = document.getElementById(id);
+                img.onload = function () {
+                    resolve();
+                }
+                img.src = base64;
+            });
+        }
+
+        function drawImage(canvas, id, dx, dy, dw, dh) {
+            return new Promise(function (resolve) {
+                var img = document.getElementById(id);
+                var ctx = canvas.getContext('2d');
+                ctx.drawImage(img, dx, dy, dw, dh);
+                resolve();
+            });
+        } 
+    </script>
+</body>
+
+</html>

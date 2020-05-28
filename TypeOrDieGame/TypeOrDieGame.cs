@@ -30,7 +30,7 @@ namespace TypeOrDie
             });
             Board.OnKeyPressed += Board_OnKeyPressed;
             Board.OnTick += Board_OnTick;
-            Board.OnResize += Board_OnResize;
+            Board.OnOverlayPaint += Board_OnOverlayPaint;
 
             // initialize
             IsDone = true;
@@ -51,6 +51,12 @@ namespace TypeOrDie
         private List<Ephemerial> Ephemerials;
         private bool ReadyToStartNextRound;
 
+        private bool Preloading = true;
+        private IEnumerable<KeyValuePair<string,byte[]>> AllResources;
+        private int CurrentResourceIndex = 0;
+        private int PreloadItemCount = 0;
+        private int PreloadCurrent = 0;
+
         private Cat Cat;
         private float Penalty;
 
@@ -59,7 +65,7 @@ namespace TypeOrDie
 
         private const string FontName = "Courier New";
         private const float FontSize = 16f;
-        private const float FontWidth = 13.25f;
+        private float FontWidth = Platform.IsType(PlatformType.Blazor) ? 9.5f : 13.25f;
 
         // visuals
         private const int TextSpacing = 25;
@@ -97,7 +103,6 @@ namespace TypeOrDie
 
             foreach(var res in engine.Common.Embedded.LoadResource<byte[]>(System.Reflection.Assembly.GetExecutingAssembly()))
             {
-                System.Diagnostics.Debug.WriteLine(res.Key);
                 if (res.Key.Length > 0 && res.Key[0] == '_')
                 {
                     // this is a book
@@ -113,9 +118,6 @@ namespace TypeOrDie
         {
             // process the key
             ProcessKeyPressed(chr);
-
-            // update image
-            Board.UpdateCell(row: 0, col: 0, ImageUpdate);
         }
 
         private void Board_OnTick()
@@ -129,26 +131,115 @@ namespace TypeOrDie
 
             // advance the cat
             AdvanceCat();
-
-            // draw
-            Board.UpdateOverlay(OverlayUpdate);
         }
 
-        private void Board_OnResize()
+        private bool Board_OnOverlayPaint(IGraphics g)
         {
-            Board.UpdateCell(row: 0, col: 0, ImageUpdate);
-            Board.UpdateOverlay(OverlayUpdate);
+            // paint
+            Paint(g);
+
+            // we handled the drawing
+            return true;
         }
 
         // paint callbacks
-        private void OverlayUpdate(IImage img)
+        private void Paint(IGraphics graphics)
         {
+            // pre-load images
+            if (Preloading)
+            {
+                if (AllResources == null)
+                {
+                    // clear
+                    graphics.Clear(RGBA.White);
+
+                    // get all the image resources
+                    AllResources = Cat.GetImagesFromResources();
+                    CurrentResourceIndex = 0;
+                    PreloadItemCount = Platform.IsType(PlatformType.Blazor) ? (AllResources.Count()/2) - 1 : AllResources.Count() - 1;
+                }
+
+                if (CurrentResourceIndex < AllResources.Count())
+                {
+                    // load one image from a resource at a time
+                    var kvp = AllResources.ElementAt(CurrentResourceIndex++);
+                    var name = kvp.Key;
+                    if (Platform.IsType(PlatformType.Blazor))
+                    {
+                        if (!name.StartsWith("t_", StringComparison.OrdinalIgnoreCase)) return;
+                        // remove the 't_'
+                        name = name.Substring(2);
+                    }
+                    var img = new ImageSource(name, kvp.Value);
+                    // load image
+                    graphics.Image(img.Image, x: 0, y: 0, width: 1, height: 1);
+                }
+
+                // display the loading bar
+                if (PreloadCurrent > 0) graphics.Rectangle(new RGBA() { B = 255, A = 255 }, x: 0, y: 100, width: (300 * ((float)PreloadCurrent / (float)PreloadItemCount)), 50, fill: true, border: false);
+                graphics.Rectangle(RGBA.Black, 0, 100, 300, 50, fill: false, border: true);
+
+                PreloadCurrent++;
+
+                // exit condition
+                if (CurrentResourceIndex >= AllResources.Count())
+                {
+                    Preloading = false;
+                    AllResources = null;
+                }
+
+                return;
+            }
+
             // clear
-            img.Graphics.Clear(RGBA.White);
-            img.MakeTransparent(RGBA.White);
+            graphics.Clear(RGBA.White);
+
+            // paint the board
+            try
+            {
+                LibraryLock.EnterReadLock();
+
+                // draw the title (relative to the typing text)
+                var titleX = TextXStart;
+                var titleY = TextYStart;
+                graphics.Rectangle(new RGBA() { R = 200, G = 200, B = 200, A = 255 }, titleX, titleY, width: Board.Width - (TextXStart * 2) - 20f, height: 90, fill: true, border: false);
+                graphics.Text(RGBA.Black, titleX, titleY + (TextSpacing * 0f), string.Format($"{CurrentBook.Title} by {CurrentBook.Author}"), TitleFontSize, TitleFontName);
+                graphics.Text(RGBA.Black, titleX, titleY + (TextSpacing * 1.2f), CurrentPoem.Section, TitleFontSize, TitleFontName);
+                graphics.Text(RGBA.Black, titleX, titleY + (TextSpacing * 2.4f), CurrentPoem.Title, TitleFontSize, TitleFontName);
+
+                // draw the stats (based on the window height
+                var statsX = TextXStart;
+                var statsY = Board.Height - 150f;
+                graphics.Rectangle(RGBA.Black, statsX, statsY, width: Board.Width - (TextXStart * 2) - 20f, height: 100, fill: true, border: true, thickness: 1f);
+                graphics.Text(RGBA.White, statsX + 10f, statsY + (TextSpacing * 0.35f), string.Format($"Round {Stats.Round}"), TitleFontSize, TitleFontName);
+                graphics.Text(RGBA.White, statsX + 10f, statsY + (TextSpacing * 2f), string.Format($"Words per minute {Stats.WordsPerMinute:f2} :: Wins {Stats.Wins} :: Losses {Stats.Losses}"), FontSize, FontName);
+                graphics.Text(RGBA.White, statsX + 10f, statsY + (TextSpacing * 3f), string.Format($"Correct characters {Stats.CorrectCharacters} :: Wrong characters {Stats.WrongCharacters}"), FontSize, FontName);
+
+                // add the cursor
+                if (CurrentLine < Lines.Length)
+                {
+                    var cursor = "_";
+                    var x = TextXStart + (Lines[CurrentLine].Input.Length * FontWidth);
+                    graphics.Text(new RGBA() { R = 255, A = 255 }, x, TextYStart + (TextSpacing * (CurrentLine + 5)), cursor, FontSize, FontName);
+                }
+
+                // draw all the strings on the board
+                for (int i = 0; i < Lines.Length; i++)
+                {
+                    graphics.Text(RGBA.Black, TextXStart, TextYStart + (TextSpacing * (i + 5)), Lines[i].Text, FontSize, FontName);
+                    if (Lines[i].Input.Length > 0)
+                    {
+                        graphics.Text(RGBA.White, TextXStart, TextYStart + (TextSpacing * (i + 5)), Lines[i].Input.ToString(), FontSize, FontName);
+                    }
+                }
+            }
+            finally
+            {
+                LibraryLock.ExitReadLock();
+            }
 
             // draw the cat
-            if (Stats.IsRunning) Cat.Draw(img);
+            if (Stats.IsRunning) Cat.Draw(graphics);
 
             // draw any ephemerial elements
             lock (Ephemerials)
@@ -173,61 +264,13 @@ namespace TypeOrDie
 
                 if (active != null)
                 {
-                    img.Graphics.Text(active.Color, x: Board.Width - 400, y: Board.Height - 200, active.Text, fontsize: 12f);
+                    graphics.Text(active.Color, x: Board.Width - 400, y: Board.Height - 200, active.Text, fontsize: 12f);
                     if (active is NextRoundEphemerial)
                     {
-                        img.Graphics.Text(RGBA.Black, x: Board.Width - 400, y: Board.Height - 200 + TextSpacing, string.Format($"Next round starts in {(active.Duration / 10) + 1}"), fontsize: 12f);
+                        graphics.Text(RGBA.Black, x: Board.Width - 400, y: Board.Height - 200 + TextSpacing, string.Format($"Next round starts in {(active.Duration / 10) + 1}"), fontsize: 12f);
                     }
                 }
 
-            }
-        }
-
-        private void ImageUpdate(IImage img)
-        {
-            try
-            {
-                LibraryLock.EnterReadLock();
-
-                img.Graphics.Clear(RGBA.White);
-
-                // draw the title (relative to the typing text
-                var titleX = TextXStart;
-                var titleY = TextYStart;
-                img.Graphics.Rectangle(new RGBA() { R = 200, G = 200, B = 200, A = 255 }, titleX, titleY, width: Board.Width - (TextXStart * 2) - 20f, height: 90, fill: true, border: false);
-                img.Graphics.Text(RGBA.Black, titleX, titleY + (TextSpacing * 0f), string.Format($"{CurrentBook.Title} by {CurrentBook.Author}"), TitleFontSize, TitleFontName);
-                img.Graphics.Text(RGBA.Black, titleX, titleY + (TextSpacing * 1.2f), CurrentPoem.Section, TitleFontSize, TitleFontName);
-                img.Graphics.Text(RGBA.Black, titleX, titleY + (TextSpacing * 2.4f), CurrentPoem.Title, TitleFontSize, TitleFontName);
-
-                // draw the stats (based on the window height
-                var statsX = TextXStart;
-                var statsY = Board.Height - 150f;
-                img.Graphics.Rectangle(RGBA.Black, statsX, statsY, width: Board.Width - (TextXStart * 2) - 20f, height: 100, fill: true, border: true, thickness: 1f);
-                img.Graphics.Text(RGBA.White, statsX + 10f, statsY + (TextSpacing * 0.35f), string.Format($"Round {Stats.Round}"), TitleFontSize, TitleFontName);
-                img.Graphics.Text(RGBA.White, statsX + 10f, statsY + (TextSpacing * 2f), string.Format($"Words per minute {Stats.WordsPerMinute:f2} :: Wins {Stats.Wins} :: Losses {Stats.Losses}"), FontSize, FontName);
-                img.Graphics.Text(RGBA.White, statsX + 10f, statsY + (TextSpacing * 3f), string.Format($"Correct characters {Stats.CorrectCharacters} :: Wrong characters {Stats.WrongCharacters}"), FontSize, FontName);
-
-                // add the cursor
-                if (CurrentLine < Lines.Length)
-                {
-                    var cursor = "_";
-                    var x = TextXStart + (Lines[CurrentLine].Input.Length * FontWidth);
-                    img.Graphics.Text(new RGBA() { R = 255, A = 255 }, x, TextYStart + (TextSpacing * (CurrentLine + 5)), cursor, FontSize, FontName);
-                }
-
-                // draw all the strings on the board
-                for (int i = 0; i < Lines.Length; i++)
-                {
-                    img.Graphics.Text(RGBA.Black, TextXStart, TextYStart + (TextSpacing * (i + 5)), Lines[i].Text, FontSize, FontName);
-                    if (Lines[i].Input.Length > 0)
-                    {
-                        img.Graphics.Text(RGBA.White, TextXStart, TextYStart + (TextSpacing * (i + 5)), Lines[i].Input.ToString(), FontSize, FontName);
-                    }
-                }
-            }
-            finally
-            {
-                LibraryLock.ExitReadLock();
             }
         }
 
@@ -269,10 +312,6 @@ namespace TypeOrDie
                 {
                     LibraryLock.ExitWriteLock();
                 }
-
-                // start the game
-                Board.UpdateCell(row: 0, col: 0, ImageUpdate);
-                Board.UpdateOverlay(OverlayUpdate);
             }
         }
 
@@ -419,9 +458,6 @@ namespace TypeOrDie
                             Duration = 30
                         });
                 }
-
-                // update image
-                Board.UpdateCell(row: 0, col: 0, ImageUpdate);
             }
         }
         #endregion

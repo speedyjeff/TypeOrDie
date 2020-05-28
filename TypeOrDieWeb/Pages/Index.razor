@@ -1,0 +1,33 @@
+﻿@page "/"
+@using engine 
+@using engine.Common
+@using TypeOrDie
+@inherits engine.Blazor.Canvas2DComponent
+@inject IJSRuntime JSRuntime
+
+<div id="canvas" tabindex="0" @onkeypress="e => KeyPress(e)" @onkeydown="e => KeyDown(e)" @onmousedown="e => MouseDown(e)" @onmousemove="e => MouseMove(e)" @onmouseup="e => MouseUp(e)" @onwheel="e => MouseWheel(e)">
+    <BECanvas Width="800" Height="512" @ref="CanvasReference"></BECanvas>
+</div>
+
+@functions
+{
+    protected override void OnInitialized()
+    {
+        // install the fonts
+        var res = engine.Common.Embedded.LoadResource<byte[]>(System.Reflection.Assembly.GetExecutingAssembly());
+        foreach(var kvp in res)
+        {
+            using(var mem = new System.IO.MemoryStream(kvp.Value))
+            {
+                System.Diagnostics.Debug.WriteLine($"Loading resource {kvp.Key}");
+                engine.XPlatform.Fonts.Load(mem);
+            }
+        }
+
+        // add initialization specific to your game here
+        var game = new TypeOrDieGame(width: 800, height:512);
+
+        // finish configuration of the canvas
+        ConfigureCanvas(game.Board);
+    }
+}
