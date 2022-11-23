@@ -25,8 +25,8 @@ namespace TypeOrDie
             this.Width = 800;
             this.Height = 512;
             this.Text = "Cats Hate Typings Mistakes";
-            var icons = engine.Common.Embedded.LoadResource<Icon>(System.Reflection.Assembly.GetExecutingAssembly());
-            if (icons.TryGetValue("full", out var icon)) this.Icon = icon;
+            var icons = engine.Common.Embedded.LoadResource(System.Reflection.Assembly.GetExecutingAssembly());
+            if (icons.TryGetValue("full", out var icon)) this.Icon = new Icon(icons["full"]);
             // setting a double buffer eliminates the flicker
             this.DoubleBuffered = true;
 

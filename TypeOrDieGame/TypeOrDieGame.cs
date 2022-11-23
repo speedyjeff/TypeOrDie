@@ -1,6 +1,7 @@
 ﻿using engine.Common;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -52,7 +53,7 @@ namespace TypeOrDie
         private bool ReadyToStartNextRound;
 
         private bool Preloading = true;
-        private IEnumerable<KeyValuePair<string,byte[]>> AllResources;
+        private Dictionary<string, byte[]> AllResources;
         private int CurrentResourceIndex = 0;
         private int PreloadItemCount = 0;
         private int PreloadCurrent = 0;
@@ -101,12 +102,14 @@ namespace TypeOrDie
         {
             var books = new List<string>();
 
-            foreach(var res in engine.Common.Embedded.LoadResource<byte[]>(System.Reflection.Assembly.GetExecutingAssembly()))
+            foreach(var kvp in engine.Common.Embedded.LoadResource(System.Reflection.Assembly.GetExecutingAssembly()))
             {
-                if (res.Key.Length > 0 && res.Key[0] == '_')
+                if (kvp.Key.Length > 0 && kvp.Key.EndsWith(".md", StringComparison.OrdinalIgnoreCase))
                 {
                     // this is a book
-                    books.Add(System.Text.UTF8Encoding.UTF8.GetString(res.Value));
+                    var bytes = new byte[kvp.Value.Length];
+                    kvp.Value.Read(bytes, 0, bytes.Length);
+                    books.Add(System.Text.UTF8Encoding.UTF8.GetString(bytes));
                 }
             }
 
@@ -166,8 +169,8 @@ namespace TypeOrDie
                     var name = kvp.Key;
                     if (Platform.IsType(PlatformType.Blazor))
                     {
-                        if (!name.StartsWith("t_", StringComparison.OrdinalIgnoreCase)) return;
-                        // remove the 't_'
+                        if (!name.StartsWith("t-", StringComparison.OrdinalIgnoreCase)) return;
+                        // remove the 't-'
                         name = name.Substring(2);
                     }
                     var img = new ImageSource(name, kvp.Value);

@@ -1,9 +1,6 @@
 ﻿using engine.Common;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TypeOrDie
 {
@@ -63,16 +60,27 @@ namespace TypeOrDie
             Height = height;
         }
 
-        public IEnumerable<KeyValuePair<string,byte[]>> GetImagesFromResources()
+        public Dictionary<string, byte[]> GetImagesFromResources()
         {
             // load the images from resources
-            foreach (var res in engine.Common.Embedded.LoadResource<byte[]>(System.Reflection.Assembly.GetExecutingAssembly()))
+            var results = new Dictionary<string, byte[]>();
+            foreach (var kvp in engine.Common.Embedded.LoadResource(System.Reflection.Assembly.GetExecutingAssembly()))
             {
-                if (res.Key.Length > 0 && res.Key[0] != '_')
+                if (kvp.Key.Length > 0 && kvp.Key.EndsWith(".png", StringComparison.OrdinalIgnoreCase))
                 {
-                    yield return res;
+                    // this is an image
+
+                    // create short name
+                    var parts = kvp.Key.Split('.');
+                    var name = parts.Length < 2 ? kvp.Key : parts[parts.Length - 2];
+
+                    // get image bytes
+                    var bytes = new byte[kvp.Value.Length];
+                    kvp.Value.Read(bytes, 0, bytes.Length);
+                    results.Add(name, bytes);
                 }
             }
+            return results;
         }
 
         public int Width { get; private set; }
@@ -195,59 +203,59 @@ namespace TypeOrDie
 
         private static readonly ImageSource[] TailImages = new ImageSource[]
         {
-            new ImageSource(@"tail_1"),
-            new ImageSource(@"tail_2"),
-            new ImageSource(@"tail_3"),
-            new ImageSource(@"tail_4"),
-            new ImageSource(@"tail_5"),
-            new ImageSource(@"tail_6"),
-            new ImageSource(@"tail_7"),
-            new ImageSource(@"tail_8"),
-            new ImageSource(@"tail_9")
+            new ImageSource(@"tail-1"),
+            new ImageSource(@"tail-2"),
+            new ImageSource(@"tail-3"),
+            new ImageSource(@"tail-4"),
+            new ImageSource(@"tail-5"),
+            new ImageSource(@"tail-6"),
+            new ImageSource(@"tail-7"),
+            new ImageSource(@"tail-8"),
+            new ImageSource(@"tail-9")
         };
         private static readonly ImageSource[][] LegImages = new ImageSource[][]
         {
             new ImageSource[]
             {
-                new ImageSource(@"leg_1_1"),
-                new ImageSource(@"leg_1_2"),
-                new ImageSource(@"leg_1_3")
+                new ImageSource(@"leg-1-1"),
+                new ImageSource(@"leg-1-2"),
+                new ImageSource(@"leg-1-3")
             },
             new ImageSource[]
             {
-                new ImageSource(@"leg_2_1"),
-                new ImageSource(@"leg_2_2")
+                new ImageSource(@"leg-2-1"),
+                new ImageSource(@"leg-2-2")
             },
             new ImageSource[]
             {
-                new ImageSource(@"leg_3_1"),
-                new ImageSource(@"leg_3_2"),
-                new ImageSource(@"leg_3_3")
+                new ImageSource(@"leg-3-1"),
+                new ImageSource(@"leg-3-2"),
+                new ImageSource(@"leg-3-3")
             },
             new ImageSource[]
             {
-                new ImageSource(@"leg_4_1"),
-                new ImageSource(@"leg_4_2"),
-                new ImageSource(@"leg_4_3"),
-                new ImageSource(@"leg_4_4")
+                new ImageSource(@"leg-4-1"),
+                new ImageSource(@"leg-4-2"),
+                new ImageSource(@"leg-4-3"),
+                new ImageSource(@"leg-4-4")
             }
         };
         private static readonly ImageSource BodyImage = new ImageSource(@"body");
         private static readonly ImageSource[] FaceImages = new ImageSource[]
         {
-            new ImageSource(@"face_front"),
-            new ImageSource(@"face_front"),
-            new ImageSource(@"face_front"),
-            new ImageSource(@"face_front"),
-            new ImageSource(@"face_front"),
-            new ImageSource(@"face_front"),
-            new ImageSource(@"face_front"),
-            new ImageSource(@"face_forward"),
-            new ImageSource(@"face_forward")
+            new ImageSource(@"face-front"),
+            new ImageSource(@"face-front"),
+            new ImageSource(@"face-front"),
+            new ImageSource(@"face-front"),
+            new ImageSource(@"face-front"),
+            new ImageSource(@"face-front"),
+            new ImageSource(@"face-front"),
+            new ImageSource(@"face-forward"),
+            new ImageSource(@"face-forward")
         };
         private static readonly ImageSource HappyImage = new ImageSource(@"happy");
         private static readonly ImageSource AngryImage = new ImageSource(@"angry");
-        private static readonly ImageSource PawPrintImage = new ImageSource(@"paw_prints");
+        private static readonly ImageSource PawPrintImage = new ImageSource(@"paw-prints");
         #endregion
     }
 }

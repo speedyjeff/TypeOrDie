@@ -14,18 +14,17 @@
     protected override void OnInitialized()
     {
         // install the fonts
-        var res = engine.Common.Embedded.LoadResource<byte[]>(System.Reflection.Assembly.GetExecutingAssembly());
-        foreach(var kvp in res)
+        foreach (var kvp in engine.Common.Embedded.LoadResource(System.Reflection.Assembly.GetExecutingAssembly()))
         {
-            using(var mem = new System.IO.MemoryStream(kvp.Value))
+            if (kvp.Key.EndsWith(".ttf", StringComparison.OrdinalIgnoreCase))
             {
                 System.Diagnostics.Debug.WriteLine($"Loading resource {kvp.Key}");
-                engine.XPlatform.Fonts.Load(mem);
+                engine.XPlatform.Fonts.Load(kvp.Value);
             }
         }
 
         // add initialization specific to your game here
-        var game = new TypeOrDieGame(width: 800, height:512);
+        var game = new TypeOrDieGame(width: 800, height: 512);
 
         // finish configuration of the canvas
         ConfigureCanvas(game.Board);
